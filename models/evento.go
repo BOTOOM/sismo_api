@@ -81,35 +81,25 @@ func MatrizCordenadas() (MatrizCuadrantes []map[string]interface{}) {
 
 // ClasificacionEventos ...
 func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]interface{}) {
-	// if eventos[0]["Latitud"].(float64) < -5.0001 {
-	// 	logs.Info(eventos[0]["Latitud"].(float64))
-
-	// 	// logs.Info(matriz[0]["Fila"])
-
-	// }
-	// if  {
-	fmt.Println(-81.2487 < -40)
-	// }
 	PrimerDatoMatriz, errPrimer := GetElementoMaptoStringToMapArray(matriz[0]["Fila"])
 	fmt.Println(errPrimer)
 	LatitudInicial := PrimerDatoMatriz[0]["latitud_ini"].(float64)
 	LongitudInicial := PrimerDatoMatriz[0]["longitud_ini"].(float64)
-	fmt.Println(LongitudInicial)
+	// fmt.Println(LongitudInicial)
 	UltimoDatoMatriz, errUltimo := GetElementoMaptoStringToMapArray(matriz[len(matriz)-1]["Fila"])
 	fmt.Println(errUltimo)
 	LatitudFinal := UltimoDatoMatriz[len(UltimoDatoMatriz)-1]["latitud_fin"].(float64)
 	LongitudFinal := UltimoDatoMatriz[len(UltimoDatoMatriz)-1]["longitud_fin"].(float64)
-	fmt.Println(LongitudFinal)
+	// fmt.Println(LongitudFinal)
 	logs.Info(len(eventos))
 	cont := 0
 	for i := 0; i < len(eventos)/10; i++ {
 		// restriccion a matriz por latitud
-		if (eventos[i]["Latitud"].(float64) <= LatitudInicial) && (eventos[0]["Latitud"].(float64) >= LatitudFinal) {
-			// logs.Error(eventos[i])
-			// (eventos[i]["Longitud"].(float64) >= LongitudInicial)
-			// && (eventos[0]["Longitud"].(float64) <= LongitudFinal)
+		if (eventos[i]["Latitud"].(float64) <= LatitudInicial) && (eventos[i]["Latitud"].(float64) >= LatitudFinal) {
+			// restriccion por longitud
 			if eventos[i]["Longitud"].(float64) >= LongitudInicial {
 				if eventos[i]["Longitud"].(float64) <= LongitudFinal {
+					eventos[i] = ClasificacionCuadrante(eventos[i], matriz)
 					logs.Error(eventos[i])
 					cont++
 				}
@@ -118,4 +108,32 @@ func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]
 	}
 	fmt.Println(cont)
 
+}
+
+// ClasificacionCuadrante ...
+func ClasificacionCuadrante(evento map[string]interface{}, matriz []map[string]interface{}) (eventoClasificado map[string]interface{}) {
+	for i := 0; i < len(matriz); i++ {
+		FilaActual, _ := GetElementoMaptoStringToMapArray(matriz[i]["Fila"])
+		// logs.Error(FilaActual[0])
+		// fmt.Println(errFila)
+		for j := 0; j < len(FilaActual); j++ {
+			// logs.Error(FilaActual[j])
+			LatitudInicial := FilaActual[j]["latitud_ini"].(float64)
+			LongitudInicial := FilaActual[j]["longitud_ini"].(float64)
+			LatitudFinal := FilaActual[j]["latitud_fin"].(float64)
+			LongitudFinal := FilaActual[j]["longitud_fin"].(float64)
+			if (evento["Latitud"].(float64) <= LatitudInicial) && (evento["Latitud"].(float64) >= LatitudFinal) {
+				// restriccion por longitud
+				if evento["Longitud"].(float64) >= LongitudInicial {
+					if evento["Longitud"].(float64) <= LongitudFinal {
+						evento["Cuadrante"] = FilaActual[j]["cuadrante"]
+						// logs.Error(evento)
+						return evento
+						// cont++
+					}
+				}
+			}
+		}
+	}
+	return nil
 }
