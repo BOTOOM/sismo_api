@@ -13,7 +13,9 @@ import (
 func Clasificacion() {
 	Eventos := LeerJSON()
 	Matriz := MatrizCordenadas()
-	ClasificacionEventos(Eventos, Matriz)
+	EventosClasificados := ClasificacionEventos(Eventos, Matriz)
+	// logs.Warn(EventosClasificados)
+	BusquedaAdyacentes(EventosClasificados, Matriz)
 }
 
 // LeerJSON ...
@@ -80,7 +82,8 @@ func MatrizCordenadas() (MatrizCuadrantes []map[string]interface{}) {
 }
 
 // ClasificacionEventos ...
-func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]interface{}) {
+func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]interface{}) (eventosCLasificados []map[string]interface{}) {
+	arrayEventos := make([]map[string]interface{}, 0)
 	PrimerDatoMatriz, errPrimer := GetElementoMaptoStringToMapArray(matriz[0]["Fila"])
 	fmt.Println(errPrimer)
 	LatitudInicial := PrimerDatoMatriz[0]["latitud_ini"].(float64)
@@ -100,6 +103,7 @@ func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]
 			if eventos[i]["Longitud"].(float64) >= LongitudInicial {
 				if eventos[i]["Longitud"].(float64) <= LongitudFinal {
 					eventos[i] = ClasificacionCuadrante(eventos[i], matriz)
+					arrayEventos = append(arrayEventos, eventos[i])
 					logs.Error(eventos[i])
 					cont++
 				}
@@ -107,7 +111,7 @@ func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]
 		}
 	}
 	fmt.Println(cont)
-
+	return arrayEventos
 }
 
 // ClasificacionCuadrante ...
@@ -127,6 +131,9 @@ func ClasificacionCuadrante(evento map[string]interface{}, matriz []map[string]i
 				if evento["Longitud"].(float64) >= LongitudInicial {
 					if evento["Longitud"].(float64) <= LongitudFinal {
 						evento["Cuadrante"] = FilaActual[j]["cuadrante"]
+						evento["Ubicacion"] = fmt.Sprintf("F%v-C%v", i, j)
+						evento["Fila"] = i
+						evento["Columna"] = j
 						// logs.Error(evento)
 						return evento
 						// cont++
