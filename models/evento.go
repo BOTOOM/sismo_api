@@ -10,12 +10,13 @@ import (
 )
 
 // Clasificacion ...
-func Clasificacion() {
+func Clasificacion() (resultadoRecorrido []map[string]interface{}) {
 	Eventos := LeerJSON()
 	Matriz := MatrizCordenadas()
 	EventosClasificados := ClasificacionEventos(Eventos, Matriz)
 	// logs.Warn(EventosClasificados)
-	BusquedaAdyacentes(EventosClasificados, Matriz)
+	recorrido := BusquedaAdyacentes(EventosClasificados, Matriz)
+	return recorrido
 }
 
 // LeerJSON ...
@@ -104,7 +105,7 @@ func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]
 				if eventos[i]["Longitud"].(float64) <= LongitudFinal {
 					eventos[i] = ClasificacionCuadrante(eventos[i], matriz)
 					arrayEventos = append(arrayEventos, eventos[i])
-					logs.Error(eventos[i])
+					// logs.Error(eventos[i])
 					cont++
 				}
 			}
@@ -134,6 +135,7 @@ func ClasificacionCuadrante(evento map[string]interface{}, matriz []map[string]i
 						evento["Ubicacion"] = fmt.Sprintf("F%v-C%v", i, j)
 						evento["Fila"] = i
 						evento["Columna"] = j
+						evento["usado"] = false
 						// logs.Error(evento)
 						return evento
 						// cont++
