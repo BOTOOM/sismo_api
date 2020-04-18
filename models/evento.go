@@ -103,6 +103,7 @@ func ClasificacionEventos(eventos []map[string]interface{}, matriz []map[string]
 			// restriccion por longitud
 			if eventos[i]["Longitud"].(float64) >= LongitudInicial {
 				if eventos[i]["Longitud"].(float64) <= LongitudFinal {
+					eventos[i]["ID"] = cont
 					eventos[i] = ClasificacionCuadrante(eventos[i], matriz)
 					arrayEventos = append(arrayEventos, eventos[i])
 					// logs.Error(eventos[i])
