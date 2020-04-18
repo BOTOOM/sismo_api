@@ -17,7 +17,9 @@ func BusquedaAdyacentes(eventos []map[string]interface{}, matriz []map[string]in
 		celdas := BuscarCeldas(eventos[i], CantidadFilas, CantidadColumnas)
 		// logs.Warn(eventos[i])
 		// fmt.Println(i)
-		if (i+1 < len(eventos)) && (eventos[i]["usado"] == false) {
+		cuadrante := fmt.Sprintf("%v", eventos[i]["Cuadrante"])
+
+		if (i+1 < len(eventos)) && (eventos[i]["usado"] == false) && (cuadrante != "3") {
 			eventos[i]["celdas"] = celdas
 			eventos[i]["usado"] = true
 
@@ -49,7 +51,7 @@ func BuscarCeldas(evento map[string]interface{}, cantidadFilas float64, cantidad
 
 	if Fila-1 >= 0 {
 		celdas = append(celdas, fmt.Sprintf("F%v-C%v", Fila-1, Columna))
-		if Columna-1 > 0 {
+		if Columna-1 >= 0 {
 			celdas = append(celdas, fmt.Sprintf("F%v-C%v", Fila-1, Columna-1))
 
 		}
@@ -59,7 +61,7 @@ func BuscarCeldas(evento map[string]interface{}, cantidadFilas float64, cantidad
 	}
 	if Fila+1 < cantidadFilas {
 		celdas = append(celdas, fmt.Sprintf("F%v-C%v", Fila+1, Columna))
-		if Columna-1 > 0 {
+		if Columna-1 >= 0 {
 			celdas = append(celdas, fmt.Sprintf("F%v-C%v", Fila+1, Columna-1))
 
 		}
@@ -85,7 +87,8 @@ func BuscarEventos(celdas []string, eventos []map[string]interface{}, indice int
 			ubicacion := fmt.Sprintf("%v", eventos[i]["Ubicacion"])
 			if celdas[j] == ubicacion {
 				listaEventos := eventos
-				if listaEventos[i]["usado"] == false {
+				cuadrante := fmt.Sprintf("%v", listaEventos[i]["Cuadrante"])
+				if listaEventos[i]["usado"] == false && cuadrante != "3" {
 					listaEventos[i]["usado"] = true
 					// listaEventos[i]["ubicacion_usada"] = listaEventos[i]["Ubicacion"]
 					celdasActuales := BuscarCeldas(listaEventos[i], numFilas, numCol)
