@@ -15,7 +15,9 @@ func Clasificacion() (resultadoRecorrido []map[string]interface{}) {
 	Matriz := MatrizCordenadas()
 	EventosClasificados := ClasificacionEventos(Eventos, Matriz)
 	// logs.Warn(EventosClasificados)
-	recorrido := BusquedaAdyacentes(EventosClasificados, Matriz)
+	// recorrido := BusquedaAdyacentes(EventosClasificados, Matriz)
+	recorrido := ElementosAGM(BusquedaAdyacentes(EventosClasificados, Matriz))
+
 	return recorrido
 }
 
@@ -26,12 +28,13 @@ func ClasificacionV2(datosEventos []map[string]interface{}) (resultadoRecorrido 
 	EventosClasificados := ClasificacionEventos(Eventos, Matriz)
 	// logs.Warn(EventosClasificados)
 	recorrido := BusquedaAdyacentes(EventosClasificados, Matriz)
+	ElementosAGM(recorrido)
 	return recorrido
 }
 
 // LeerJSON ...
 func LeerJSON() (dato []map[string]interface{}) {
-	logs.Info("entro al leer")
+	// logs.Info("entro al leer")
 	array := make([]map[string]interface{}, 0)
 	// fmt.Println(array)
 	raw, err := ioutil.ReadFile("./eventos1.json")
@@ -40,7 +43,7 @@ func LeerJSON() (dato []map[string]interface{}) {
 		os.Exit(1)
 	}
 	json.Unmarshal(raw, &array)
-	logs.Info(array[0])
+	// logs.Info(array[0])
 	return array
 }
 

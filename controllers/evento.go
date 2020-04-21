@@ -5,7 +5,6 @@ import (
 
 	"github.com/BOTOOM/sismos/models"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 )
 
 // EventoController operations for Evento
@@ -32,7 +31,7 @@ func (c *EventoController) Post() {
 	var listaEventos []map[string]interface{}
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &listaEventos); err == nil {
-		recorridoEncontrado := models.Clasificacion()
+		recorridoEncontrado := models.ClasificacionV2(listaEventos)
 		c.Data["json"] = recorridoEncontrado
 	} else {
 		c.Ctx.Output.SetStatus(403)
@@ -49,7 +48,7 @@ func (c *EventoController) Post() {
 // @Failure 403
 // @router / [get]
 func (c *EventoController) GetAll() {
-	logs.Info("entro al all")
+	// logs.Info("entro al all")
 	recorridoEncontrado := models.Clasificacion()
 	c.Data["json"] = recorridoEncontrado
 	c.ServeJSON()
