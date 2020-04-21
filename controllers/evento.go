@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"encoding/json"
+
 	"github.com/BOTOOM/sismos/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -14,7 +16,6 @@ type EventoController struct {
 // URLMapping ...
 func (c *EventoController) URLMapping() {
 	c.Mapping("Post", c.Post)
-	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
@@ -23,22 +24,20 @@ func (c *EventoController) URLMapping() {
 // Post ...
 // @Title Create
 // @Description create Evento
-// @Param	body		body 	models.Evento	true		"body for Evento content"
-// @Success 201 {object} models.Evento
+// @Param	body		body 	{}	true		"body for Evento content"
+// @Success 201 {}
 // @Failure 403 body is empty
 // @router / [post]
 func (c *EventoController) Post() {
+	var listaEventos []map[string]interface{}
 
-}
-
-// GetOne ...
-// @Title GetOne
-// @Description get Evento by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Evento
-// @Failure 403 :id is empty
-// @router /:id [get]
-func (c *EventoController) GetOne() {
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &listaEventos); err == nil {
+		recorridoEncontrado := models.Clasificacion()
+		c.Data["json"] = recorridoEncontrado
+	} else {
+		c.Ctx.Output.SetStatus(403)
+	}
+	c.ServeJSON()
 
 }
 
@@ -46,7 +45,7 @@ func (c *EventoController) GetOne() {
 // @Title GetAll
 // @Description get Evento
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
-// @Success 200 {object} models.Evento
+// @Success 200 {}
 // @Failure 403
 // @router / [get]
 func (c *EventoController) GetAll() {
@@ -61,8 +60,8 @@ func (c *EventoController) GetAll() {
 // @Title Put
 // @Description update the Evento
 // @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Evento	true		"body for Evento content"
-// @Success 200 {object} models.Evento
+// @Param	body		body 	{}	true		"body for Evento content"
+// @Success 200 {}
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *EventoController) Put() {

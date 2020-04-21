@@ -19,6 +19,16 @@ func Clasificacion() (resultadoRecorrido []map[string]interface{}) {
 	return recorrido
 }
 
+// ClasificacionV2 ...
+func ClasificacionV2(datosEventos []map[string]interface{}) (resultadoRecorrido []map[string]interface{}) {
+	Eventos := datosEventos
+	Matriz := MatrizCordenadas()
+	EventosClasificados := ClasificacionEventos(Eventos, Matriz)
+	// logs.Warn(EventosClasificados)
+	recorrido := BusquedaAdyacentes(EventosClasificados, Matriz)
+	return recorrido
+}
+
 // LeerJSON ...
 func LeerJSON() (dato []map[string]interface{}) {
 	logs.Info("entro al leer")

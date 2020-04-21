@@ -32,10 +32,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Evento"
-                        }
+                        "description": "{}"
                     },
                     "403": {
                         "description": ""
@@ -55,16 +52,13 @@
                         "description": "body for Evento content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Evento"
+                            "$ref": "#/definitions/{}"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Evento"
-                        }
+                        "description": "{}"
                     },
                     "403": {
                         "description": "body is empty"
@@ -73,33 +67,6 @@
             }
         },
         "/evento/{id}": {
-            "get": {
-                "tags": [
-                    "evento"
-                ],
-                "description": "get Evento by id",
-                "operationId": "EventoController.GetOne",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The key for staticblock",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Evento"
-                        }
-                    },
-                    "403": {
-                        "description": ":id is empty"
-                    }
-                }
-            },
             "put": {
                 "tags": [
                     "evento"
@@ -120,16 +87,13 @@
                         "description": "body for Evento content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Evento"
+                            "$ref": "#/definitions/{}"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Evento"
-                        }
+                        "description": "{}"
                     },
                     "403": {
                         "description": ":id is not int"
@@ -163,8 +127,8 @@
         }
     },
     "definitions": {
-        "models.Evento": {
-            "title": "Evento",
+        "{}": {
+            "title": "{}",
             "type": "object"
         }
     },
